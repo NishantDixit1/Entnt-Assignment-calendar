@@ -418,7 +418,13 @@ const UserDashboard = () => {
             </Box>
             <DataGrid
               rows={communications}
-              getRowId={(row) => row._id + row.company.name}
+              getRowId={(row) => {
+                if (!row || !row._id || !row.company) {
+                  console.error('Invalid row data:', row);
+                  return 'unknown-id'; // Provide a fallback ID
+                }
+                return `${row._id}-${row.company.name || 'unknown-company'}`; 
+              }}
               columns={columns}
               pageSize={5}
               checkboxSelection
